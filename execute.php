@@ -21,8 +21,10 @@
   if(strpos($text, "/engage") === 0 || strpos($text, "/engage@AmaMilanoBot")) {
     $f_contents = file("verbs.txt");
     $line = $f_contents[rand(0, count($f_contents) - 1)];
+    $verb = trim($line);
+    $verb .= 'MILANO';
   	//$response = 'Lascio colare un po\' di engagement: '. $line .'MILANO';
-  	$response = $line .'MILANO';
+  	$response = $verb;
 
   } elseif(strpos($text, "/version") === 0 || strpos($text, "/version@AmaMilanoBot")) {
 	   $response = "#AmaMilano 0.3, ora ancora più idiota!";
