@@ -27,7 +27,17 @@
   	//DEBUG $response = $verb;
 
   } elseif(strpos($text, "/version") === 0 || strpos($text, "/version@AmaMilanoBot")) {
-	   $response = '#AmaMilano versione 0.5, edizione "SalaStopSmartWorking"';
+    $file="verbs.txt";
+    $linecount = 0;
+    $handle = fopen($file, "r");
+    while(!feof($handle)){
+      $line = fgets($handle);
+      $linecount++;
+    }
+    fclose($handle);
+    $response = '#AmaMilano versione 0.5, edizione "SalaStopSmartWorking"';
+	  $response .= 'Voci caricate in libreria: '.$linecount;
+	  $response .= 'File voci: https://github.com/gfscom/amamilano/blob/master/verbs.txt';
   } else {}
 
   $parameters = array('chat_id' => $chatId, "text" => $response);
