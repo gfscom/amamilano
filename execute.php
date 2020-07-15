@@ -27,7 +27,7 @@
   	//DEBUG $response = $verb;
 
   } elseif(strpos($text, "/version") === 0 || strpos($text, "/version@AmaMilanoBot")) {
-	   $response = "#AmaMilano 0.5, #SalaDiceCoseEdition";
+	   $response = '#AmaMilano versione 0.5, edizione "SalaStopSmartWorking"';
   } else {}
 
   $parameters = array('chat_id' => $chatId, "text" => $response);
