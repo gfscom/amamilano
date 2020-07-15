@@ -36,8 +36,8 @@
     }
     fclose($handle);
     $response = '#AmaMilano versione 0.5, edizione "SalaStopSmartWorking"';
-	  $response .= 'Voci caricate in libreria: '.$linecount;
-	  $response .= 'File voci: https://github.com/gfscom/amamilano/blob/master/verbs.txt';
+	  $response .= chr(10).'Voci caricate in libreria: '.$linecount;
+	  $response .= chr(10).'File voci: https://github.com/gfscom/amamilano/blob/master/verbs.txt';
   } else {}
 
   $parameters = array('chat_id' => $chatId, "text" => $response);
