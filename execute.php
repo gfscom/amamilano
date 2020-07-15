@@ -23,11 +23,11 @@
     $line = $f_contents[rand(0, count($f_contents) - 1)];
     $verb = trim($line);
     $verb .= 'MILANO';
-  	//$response = 'Lascio colare un po\' di engagement: '. $line .'MILANO';
-  	$response = $verb;
+  	$response = 'Lascio colare un po\' di engagement: '. $verb;
+  	//DEBUG $response = $verb;
 
   } elseif(strpos($text, "/version") === 0 || strpos($text, "/version@AmaMilanoBot")) {
-	   $response = "#AmaMilano 0.3, ora ancora più idiota!";
+	   $response = "#AmaMilano 0.5, #SalaDiceCoseEdition";
   } else {}
 
   $parameters = array('chat_id' => $chatId, "text" => $response);
