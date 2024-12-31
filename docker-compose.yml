@@ -1,0 +1,6 @@
+services:
+  amamilano-bot:
+    restart: unless-stopped
+    image: gfsolone/amamilano:latest
+    env_file:
+      - stack.env
