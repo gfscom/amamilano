@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 # Copy the script and requirements
 WORKDIR /app
-COPY bot.py requirements.txt verbs.txt ./
+COPY amamilano.py requirements.txt verbs.txt ./
 
 # Install Python dependencies
 RUN pip install --upgrade pip
