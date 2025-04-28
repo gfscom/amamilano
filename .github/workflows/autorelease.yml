@@ -1,0 +1,67 @@
+name: Auto Release on Version Change
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'amamilano.py'
+
+jobs:
+  check-version-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from current file
+        id: extract-version
+        run: |
+          VERSION=$(grep -oP 'Versione \K[0-9]+(\.[0-9]+)*' amamilano.py)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version found: $VERSION"
+
+      - name: Check if version changed
+        id: check-version
+        run: |
+          # Verifica se esiste già un tag con questa versione
+          if git rev-parse "${{ steps.extract-version.outputs.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+            echo "Tag ${{ steps.extract-version.outputs.VERSION }} already exists. Skipping release."
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+            echo "Tag ${{ steps.extract-version.outputs.VERSION }} does not exist. Will create release."
+            
+            # Find the most recent tag to compare with
+            LATEST_TAG=$(git tag | sort -V | tail -n 1 || echo "")
+            if [ -z "$LATEST_TAG" ]; then
+              echo "No previous tags found. Will include all commits."
+              CHANGELOG=$(git log --pretty=format:"* %s (%h)" --no-merges)
+            else
+              echo "Latest tag: $LATEST_TAG. Will generate changelog from this tag."
+              CHANGELOG=$(git log ${LATEST_TAG}..HEAD --pretty=format:"* %s (%h)" --no-merges)
+            fi
+            
+            echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGELOG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        if: steps.check-version.outputs.TAG_EXISTS == 'false'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.extract-version.outputs.VERSION }}
+          name: Release ${{ steps.extract-version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          body: |
+            # Release ${{ steps.extract-version.outputs.VERSION }} di AmaMilano
+            
+            ## Changelog
+            ${{ steps.check-version.outputs.CHANGELOG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
