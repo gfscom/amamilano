@@ -1,7 +1,7 @@
 import os
 import random
 import logging
-from telegram import Update, Chat
+from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 # Logger configuration
@@ -59,6 +59,10 @@ async def engage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         logger.error(error_message)
         await update.message.reply_text(error_message)
+    except Exception as e:
+        error_message = f"Errore: {str(e)}"
+        logger.error(error_message)
+        await update.message.reply_text(error_message)
 
 async def version(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
@@ -78,10 +82,13 @@ async def version(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     log_user_info(update)
     try:
         with open("verbs.txt", "r") as f:
-            line_count = sum(1 for _ in f)
+            verbs = f.readlines()
+        line_count = len(verbs)
+        version_info = "0.6.8"
+        logger.info(f"Version info: {version_info}")
         response = (
             "#AmaMilano, il bot per il vero imbruttito della City.\n"
-            "Versione 0.6.7\n"
+            f"Versione {version_info}\n"
             "Edizione 'PYTHONAMILANO'\n"
             f"File locale: verbs.txt, voci caricate in libreria: {line_count}"
         )
@@ -115,7 +122,7 @@ def main():
     app = Application.builder().token(token).build()
     app.add_handler(CommandHandler("engage", engage))
     app.add_handler(CommandHandler("version", version))
-    
+
     logger.info("Bot started and running ...")
     app.run_polling()
 
