@@ -18,6 +18,7 @@ LABEL org.opencontainers.image.version="${VERSION}" \
 
 COPY --from=builder /root/.local /root/.local
 COPY amamilano.py .
+COPY verbs.txt .
 
 ENV PATH=/root/.local/bin:$PATH \
     VERSION=${VERSION}
