@@ -84,7 +84,7 @@ async def version(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         with open("verbs.txt", "r") as f:
             verbs = f.readlines()
         line_count = len(verbs)
-        version_info = "0.7.2"
+        version_info = "0.7.3"
         logger.info(f"Version info: {version_info}")
         response = (
             "#AmaMilano, il bot per il vero imbruttito della City.\n"
