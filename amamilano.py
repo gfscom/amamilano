@@ -81,7 +81,7 @@ async def version(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             line_count = sum(1 for _ in f)
         response = (
             "#AmaMilano, il bot per il vero imbruttito della City.\n"
-            "Versione 0.6\n"
+            "Versione 0.6.3\n"
             "Edizione 'PYTHONAMILANO'\n"
             f"File locale: verbs.txt, voci caricate in libreria: {line_count}"
         )
