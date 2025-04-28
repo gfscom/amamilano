@@ -1,12 +1,25 @@
-FROM python:3.13-slim
+# Fase di build
+FROM python:3.11-slim as builder
 
-# Copy the script and requirements
-WORKDIR /app
-COPY amamilano.py requirements.txt verbs.txt ./
+ARG VERSION=latest
+ENV VERSION=${VERSION}
 
-# Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN pip install --user -r requirements.txt
 
-# Start the script
+# Fase finale
+FROM python:3.11-slim
+
+ARG VERSION=latest
+LABEL org.opencontainers.image.version="${VERSION}" \
+    org.opencontainers.image.source="https://github.com/gfsolone/amamilano" \
+    org.opencontainers.image.created="${BUILD_DATE}" \
+    org.opencontainers.image.licenses="MIT"
+
+COPY --from=builder /root/.local /root/.local
+COPY amamilano.py .
+
+ENV PATH=/root/.local/bin:$PATH \
+    VERSION=${VERSION}
+    
 CMD ["python", "amamilano.py"]
