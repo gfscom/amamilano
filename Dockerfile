@@ -1,5 +1,5 @@
 # Fase di build
-FROM python:3.14.1-slim as builder
+FROM python:3.15.0a2-slim as builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --user -r requirements.txt
 
 # Fase finale
-FROM python:3.14.1-slim
+FROM python:3.15.0a2-slim
 
 WORKDIR /app
 
